@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRkose</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- SHA256 Library -->
+    <script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/src/sha256.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>QRkose</h1>
+        <p class="subtitle">Automatically fetches data using your auth token</p>
+        
+        <div class="input-section">
+            <h2>Authentication</h2>
+            
+            <div class="input-group">
+                <label for="authToken">Auth Token:</label>
+                <input type="text" id="authToken" placeholder="Enter your Meteor.loginToken or auth token">
+                <small>Try: Meteor.loginToken, _storedLoginToken, galaxy-sticky, or auth cookie value</small>
+            </div>
+            
+            <div class="input-group">
+                <label for="wsUrl">WebSocket URL:</label>
+                <input type="text" id="wsUrl" value="wss://plus.arkose.com/websocket" placeholder="wss://plus.arkose.com/websocket">
+                <small>The WebSocket endpoint for DDP connection</small>
+            </div>
+            
+            <button id="connectBtn" onclick="connectAndFetch()">Connect & Fetch Data</button>
+            <button id="disconnectBtn" onclick="disconnect()" style="display: none;">Disconnect</button>
+        </div>
+        
+        <div id="globalStatus" class="global-status">
+            <span class="status-label">Status:</span>
+            <span id="statusText">Ready to connect</span>
+        </div>
+        
+        <div id="fetchedData" class="data-section" style="display: none;">
+            <h2>Fetched Data</h2>
+            
+            <div class="data-group">
+                <h3>User Profile (Raw)</h3>
+                <details>
+                    <summary>Click to expand JSON</summary>
+                    <pre id="userProfile"></pre>
+                </details>
+            </div>
+            
+            <div class="data-group">
+                <h3>Values Used for QR Generation</h3>
+                <div id="extractedValues"></div>
+            </div>
+        </div>
+        
+        <div id="qrSection" class="qr-section" style="display: none;">
+            <h2>Generated QR Code</h2>
+            
+            <div class="qr-display">
+                <div id="qrContainer"></div>
+            </div>
+            
+            <div class="qr-info">
+                <div class="info-item">
+                    <strong>QR String:</strong>
+                    <div id="qrString" class="qr-string"></div>
+                </div>
+                
+                <div class="info-item">
+                    <strong>Time Remaining:</strong>
+                    <div id="timeRemaining" class="countdown">--</div>
+                    <span class="time-info">Next update at: <span id="generatedAt">--</span></span>
+                </div>
+                
+                <details class="debug-details">
+                    <summary>Debug Information</summary>
+                    <div class="debug-info">
+                        <div class="info-item">
+                            <strong>Time Bucket:</strong>
+                            <div id="timeBucket">--</div>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hash Input:</strong>
+                            <div id="hashInput" class="hash-input">--</div>
+                        </div>
+                        <div class="info-item">
+                            <strong>SHA256:</strong>
+                            <div id="sha256Hash" class="hash-input">--</div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <div class="debug-section">
+            <h3>WebSocket Messages</h3>
+            <div id="wsMessages"></div>
+        </div>
+    </div>
+    
+    <script src="qr-auto-fetcher.js"></script>
+</body>
+</html>
