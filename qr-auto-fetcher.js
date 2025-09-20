@@ -280,8 +280,7 @@ function handleUserData(fields) {
     
     // Extract gestixiId - try multiple locations
     if (fields.profile && fields.profile.gestixiIds && fields.profile.gestixiIds.length > 0) {
-        // Use the last one (2671752 in your case)
-        gestixiId = fields.profile.gestixiIds[fields.profile.gestixiIds.length - 1];
+        gestixiId = fields.profile.gestixiIds[0];
         updateExtractedValue('gestixiId', gestixiId);
         updateExtractedValue('gestixiIds (all)', fields.profile.gestixiIds.join(', '));
     }
